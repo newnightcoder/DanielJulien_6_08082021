@@ -1,0 +1,18 @@
+{
+  "name": "so-pekocko-api",
+  "version": "1.0.0",
+  "description": "node API",
+  "main": "app.js",
+  "scripts": {
+    "start": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.10",
+    "mongoose": "^5.13.5"
+  }
+}
