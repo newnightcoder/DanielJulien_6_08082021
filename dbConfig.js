@@ -7,16 +7,16 @@ const options = {
 };
 
 /*****************************************
-DB connexion with mongoose 😎  = 1 liner 
-*****************************************/
+ DB connexion with mongoose😎  = 1 liner 
+******************************************/
 
 mongoose.connect(process.env.DB_CONNEXION, options, () =>
-  console.log("connexion successful!🚀")
+  console.log("DB connected!🚀")
 );
 
 /************************************
   DB connexion with mongoDB script😭
-************************************/
+*************************************/
 
 // MongoClient.connect(uri, options, (err, client) => {
 //   if (err) return console.log(err, "oops! connection failed!😭");
