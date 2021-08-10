@@ -1,13 +1,15 @@
+import cors from "cors";
 import express from "express";
 import "./dbConfig.js";
 import router from "./routes/router.js";
 const app = express();
 
-const PORT = process.env.PORT || "8080";
+const PORT = process.env.PORT || "3000";
 
 // App middlewares (to read req.body etc...)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // Route middlewares
 app.get("/", (req, res) => {
