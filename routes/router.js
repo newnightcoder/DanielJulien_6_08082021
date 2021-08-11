@@ -18,9 +18,11 @@ router.post("/signup", async (req, res) => {
     console.log("user added:", newUser);
     res.send(`status code:${res.statusCode} \n new user:${newUser}`);
   } catch (error) {
-    res.send(`❌ Here's the error:${error}`);
+    res.send(`Oops! error:${error.message}`);
+    console.log(`Oops! error:${error.message}`);
   }
 });
+
 /*****************
    LOGIN route 
 ******************/
