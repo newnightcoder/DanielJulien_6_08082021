@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 /*****************************************

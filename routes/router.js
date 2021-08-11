@@ -8,18 +8,18 @@ const router = express.Router();
 ******************/
 
 router.post("/signup", async (req, res) => {
-  const user = new User({
+  const user = {
     email: req.body.email,
     password: req.body.password,
-  });
+  };
 
   try {
-    const newUser = await user.save();
+    const newUser = await User.create(user);
     console.log("user added:", newUser);
     res.send(`status code:${res.statusCode} \n new user:${newUser}`);
   } catch (error) {
-    res.send(`Oops! error:${error.message}`);
     console.log(`Oops! error:${error.message}`);
+    res.send(`Oops! error:${error.message}`);
   }
 });
 

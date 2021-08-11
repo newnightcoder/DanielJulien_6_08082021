@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
+// mongoose Schema
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -14,13 +16,14 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// mongoose PRE hook to hash password before saving to DB
 userSchema.pre("save", function () {
-  const SALT = bcrypt.genSaltSync();
-  console.log(`SALT! ${SALT}`);
-  this.password = bcrypt.hashSync(this.password, SALT);
+  const salt = bcrypt.genSaltSync(); // genSaltSync() is synchronous. for async, use genSalt()
+  this.password = bcrypt.hashSync(this.password, salt); //  hashSync() is synchronous. for async, use hash()
   console.log(`hashed password😎: ${this.password}`);
+  if (!this.email.unique) console.log("password already taken");
 });
 
+// mongoose Model
 const User = mongoose.model("User", userSchema, "Hot-Takes");
-
 export default User;
