@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", function () {
   const salt = bcrypt.genSaltSync(); // genSaltSync() is synchronous. for async, use genSalt()
   this.password = bcrypt.hashSync(this.password, salt); //  hashSync() is synchronous. for async, use hash()
-  console.log(`hashed password😎: ${this.password}`);
   if (!this.email.unique) console.log("password already taken");
 });
 
