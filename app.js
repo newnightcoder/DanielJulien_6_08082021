@@ -5,7 +5,7 @@ import "./dbConfig.js";
 import authRoute from "./routes/router.js";
 const app = express();
 
-const PORT = process.env.PORT || "3000";
+const port = process.env.PORT || "3000";
 
 // App middlewares (to read req.body etc...)
 app.use(express.json());
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoute);
 
-app.listen(PORT, (err) => {
+app.listen(port, (err) => {
   if (err) console.log(`server error: ${err.message}`);
-  console.log(`Server running on port ${PORT}🔥`);
+  console.log(`Server running on port ${port}🔥`);
 });

@@ -26,42 +26,36 @@ router.post("/signup", async (req, res) => {
     // create user in DB
     const newUser = await User.create(user);
     console.log("user added:", newUser);
-
-    // create JWT
-    const token = createToken(newUser._id);
-    res.cookie("JWT", token, { httpOnly: true, maxAge: 1000 * 60 * 3 });
-    res.send(`JWT created!!! ${token}`);
-    console.log(`JWT created!!! ${token}`);
+    // res.send(`user added: ${newUser}`);
   } catch (error) {
-    console.log(`Oops! error:${error.message}`);
-    res.send(`Oops! error:${error.message}`);
+    console.log(`Oops! ${error.message}`);
+    res.send(`Oops! ${error.message}`);
   }
-});
-
-router.get("/signup", (req, res) => {
-  res.send("ok!");
 });
 
 /*****************
    LOGIN route 
 ******************/
 
-router.post("/login", (req, res) => {
-  // const newUser = new User({
-  //   email: req.body.email,
-  //   password: req.body.password,
-  // });
-  // User.find((err, doc) => {
-  //   res.send(`new User: ${doc}`);
-  // });
-  // res.send(`${newUser}`);
-  // try {
-  //   const test = await newUser.save();
-  //   console.log(test);
-  //   res.send(`status code:${res.statusCode} new user:${test}`);
-  // } catch (error) {
-  //   res.send(`${error}`);
-  // }
+router.post("/login", async (req, res) => {
+  // 1- check if user is already in DB
+  const user = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  try {
+    // 2- create JWT
+    // const token = createToken(newUser._id);
+    // res.cookie("JWT", token, { httpOnly: true, maxAge: 1000 * 60 * 3 });
+    // console.log(`JWT created!!! ${token}`);
+
+    // 3- send user to frontend
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(`Oops! ${error.message}`);
+    res.send(`Oops! ${error.message}`);
+  }
 });
 
 export default router;
