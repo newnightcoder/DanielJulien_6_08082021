@@ -20,9 +20,8 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", function () {
   const salt = bcrypt.genSaltSync(); // genSaltSync() is synchronous. for async, use genSalt()
   this.password = bcrypt.hashSync(this.password, salt); //  hashSync() is synchronous. for async, use hash()
-  if (!this.email.unique) console.log("this email is already in the DB");
 });
 
 // mongoose Model
-const User = mongoose.model("User", userSchema, "Hot-Takes");
+const User = mongoose.model("User", userSchema, "Users");
 export default User;
