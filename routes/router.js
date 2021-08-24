@@ -22,5 +22,6 @@ router.post("/signup", userController.createUser);
 router.post("/login", userController.logUser);
 router.post("/", imgUpload.single("image"), saucesController.addSauce);
 router.get("/", saucesController.getAll);
+router.get("/:id", saucesController.getOne);
 
 export default router;
