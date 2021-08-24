@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 // Route middlewares
 app.use("/api/auth", authRoute);
-app.use("/api", authRoute);
+app.use("/api/sauces", authRoute);
 
 app.listen(port, (err) => {
   if (err) console.log(`server error: ${err.message}`);
