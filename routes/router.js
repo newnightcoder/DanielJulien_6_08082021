@@ -22,6 +22,7 @@ router.post("/login", userController.logUser);
 router.get("/", saucesController.getAll);
 router.post("/", imgUpload, saucesController.addSauce);
 router.get("/:id", saucesController.getOne);
+router.put("/:id", saucesController.updateSauce);
 router.delete("/:id", saucesController.deleteSauce);
 
 export default router;
