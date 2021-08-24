@@ -12,16 +12,16 @@ const imgStorage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     callback(null, `${Date.now()}-${file.fieldname}`);
-    console.log("img uploadée", file);
   },
 });
-const imgUpload = multer({ imgStorage: imgStorage });
+const imgUpload = multer({ imgStorage: imgStorage }).single("image");
 
 // Routes
 router.post("/signup", userController.createUser);
 router.post("/login", userController.logUser);
-router.post("/", imgUpload.single("image"), saucesController.addSauce);
 router.get("/", saucesController.getAll);
+router.post("/", imgUpload, saucesController.addSauce);
 router.get("/:id", saucesController.getOne);
+router.delete("/:id", saucesController.deleteSauce);
 
 export default router;

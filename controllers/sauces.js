@@ -23,15 +23,23 @@ export const addSauce = async (req, res) => {
   try {
     const sauce = {
       ...test,
-      imageUrl: `${req.protocol}://${req.get("host")}/images/${
-        req.file.filename
+      imgUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.originalname
       }`,
     };
-
     const newSauce = await Sauce.create(sauce);
     console.log("sauce ajoutée", newSauce);
     res.status(201).json({ message: "Nouvelle sauce ajoutée avec succès!" });
   } catch (error) {
     res.status(500).json({ error });
+  }
+};
+
+export const deleteSauce = async (req, res) => {
+  try {
+    const sauce = await Sauce.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: "Sauce supprimée!" });
+  } catch (error) {
+    res.status(400).json({ error });
   }
 };
