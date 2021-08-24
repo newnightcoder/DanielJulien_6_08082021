@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export const createUser = async (req, res) => {
@@ -10,29 +11,41 @@ export const createUser = async (req, res) => {
     // create user in DB
     const newUser = await User.create(user);
     console.log("user added:", newUser);
+    res.status(201).json({ message: "compte créé avec succès" });
   } catch (error) {
     console.log(`Oops! ${error.message}`);
-    res.send(`Oops! ${error.message}`);
+    res.status(500).json({ error });
   }
 };
 
+// JWT creation
+export const createToken = (id) => {
+  return jwt.sign({ id }, "testjwt");
+};
+
 export const logUser = async (req, res) => {
-  // 1- check if user is already in DB
   const user = {
     email: req.body.email,
     password: req.body.password,
   };
 
   try {
-    // 2- create JWT
-    // const token = createToken(newUser._id);
-    // res.cookie("JWT", token, { httpOnly: true, maxAge: 1000 * 60 * 3 });
-    // console.log(`JWT created!!! ${token}`);
-
-    // 3- send user to frontend
-    res.status(200).json(user);
+    // 1- check if user is in DB
+    const isUser = await User.findOne({ email: req.body.email });
+    if (!isUser) {
+      return res
+        .status(401)
+        .json({ error: "Please sign in to create an account." });
+    }
+    // 2- JWT
+    const token = createToken(isUser._id);
+    console.log(`JWT created!!! ${token}`);
+    // // 3- send user to frontend
+    res.status(200).json({ userId: isUser._id, token: token });
   } catch (error) {
     console.log(`Oops! ${error.message}`);
-    res.send(`Oops! ${error.message}`);
+    res.status(500).json({ error });
   }
 };
+
+// res.cookie("JWT", token, { httpOnly: false, maxAge: 1000 * 60 * 3 });

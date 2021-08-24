@@ -15,11 +15,8 @@ app.use(cookieParser());
 // app.use(express.static("public"));
 
 // Route middlewares
-app.get("/", (req, res) => {
-  res.send("hey hey");
-});
-
 app.use("/api/auth", authRoute);
+app.use("/api", authRoute);
 
 app.listen(port, (err) => {
   if (err) console.log(`server error: ${err.message}`);
