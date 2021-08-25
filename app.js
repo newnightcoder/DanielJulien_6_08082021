@@ -8,6 +8,7 @@ const app = express();
 
 const port = process.env.PORT || "3000";
 
+const __dirname = path.resolve();
 // App middlewares (to read req.body etc...)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +18,6 @@ app.use(cookieParser());
 // Route middlewares
 app.use("/api/auth", authRoute);
 app.use("/api/sauces", authRoute);
-const __dirname = path.resolve();
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.listen(port, (err) => {
