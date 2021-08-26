@@ -10,6 +10,7 @@ const app = express();
 const port = process.env.PORT || "3000";
 
 const __dirname = path.resolve();
+
 // App middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,9 +18,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes middlewares
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", authRoute);
 app.use("/api/sauces", saucesRoute);
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.listen(port, (err) => {
   if (err) console.log(`server error: ${err.message}`);

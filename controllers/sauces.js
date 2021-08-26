@@ -24,10 +24,11 @@ export const addSauce = async (req, res) => {
   try {
     const sauce = {
       ...sauceObject,
-      imgUrl: `${req.protocol}://${req.get("host")}/images/${
-        req.file.originalname
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
       }`,
     };
+    console.log("file", req.file);
     const newSauce = await Sauce.create(sauce);
     console.log("sauce ajoutée", newSauce);
     res.status(201).json({ message: "Nouvelle sauce ajoutée avec succès!" });
