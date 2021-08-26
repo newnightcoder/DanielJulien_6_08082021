@@ -3,21 +3,22 @@ import cors from "cors";
 import express from "express";
 import * as path from "path";
 import "./dbConfig.js";
-import authRoute from "./routes/router.js";
+import authRoute from "./routes/authRoute.js";
+import saucesRoute from "./routes/saucesRoute.js";
 const app = express();
 
 const port = process.env.PORT || "3000";
 
 const __dirname = path.resolve();
-// App middlewares (to read req.body etc...)
+// App middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 
-// Route middlewares
+// Routes middlewares
 app.use("/api/auth", authRoute);
-app.use("/api/sauces", authRoute);
+app.use("/api/sauces", saucesRoute);
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.listen(port, (err) => {

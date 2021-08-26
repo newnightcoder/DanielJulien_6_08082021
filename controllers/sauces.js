@@ -24,7 +24,9 @@ export const addSauce = async (req, res) => {
   try {
     const sauce = {
       ...sauceObject,
-      imgUrl: `${req.protocol}://localhost:3000/images/${req.file.originalname}`,
+      imgUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.originalname
+      }`,
     };
     const newSauce = await Sauce.create(sauce);
     console.log("sauce ajoutée", newSauce);
@@ -36,11 +38,7 @@ export const addSauce = async (req, res) => {
 
 export const updateSauce = async (req, res) => {
   try {
-    const newSauce = await Sauce.updateOne(
-      { _id: req.params.id },
-      JSON.parse(req.body.sauce)
-    );
-    // console.log("sauce modifiée", newSauce);
+    await Sauce.updateOne({ _id: req.params.id }, JSON.parse(req.body.sauce));
     res.status(200).json({ message: "Sauce modifiée avec succès!" });
   } catch (error) {
     console.log("erreur update", error.message);
