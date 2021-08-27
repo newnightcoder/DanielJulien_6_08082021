@@ -47,13 +47,34 @@ export const updateSauce = async (req, res) => {
       }
     : req.body;
 
-  console.log("req.body", req.body);
-
   try {
     await Sauce.updateOne({ _id: req.params.id }, sauceObject);
     res.status(200).json({ message: "Sauce modifiée avec succès!" });
   } catch (error) {
     console.log("erreur update", error.message);
+    res.status(500).json({ error });
+  }
+};
+
+export const handleLike = async (req, res) => {
+  let likes = 1 || 0 || -1;
+  // const likedSauce = {
+  //   ...req.body,
+  //   likes,
+  //   usersLiked: (),
+  //   usersDisliked: (likes = -1 ? req.body.userId : null),
+  // };
+
+  try {
+    const sauce = await Sauce.findOne({ _id: req.params.id });
+    sauce.likes = likes;
+    sauce.usersLiked = likes === 1 && sauce.usersLiked.push(req.body.userId);
+    sauce.usersDisliked =
+      likes === -1 && sauce.usersDisliked.push(req.body.userId);
+    await sauce.save();
+    console.log("liked/disliked sauce", sauce);
+    res.status(200).json({ userId: req.body.userId, likes });
+  } catch (error) {
     res.status(500).json({ error });
   }
 };
