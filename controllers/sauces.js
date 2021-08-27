@@ -20,10 +20,9 @@ export const getOne = async (req, res) => {
 };
 
 export const addSauce = async (req, res) => {
-  const sauceObject = JSON.parse(req.body.sauce);
   try {
     const sauce = {
-      ...sauceObject,
+      ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`,
@@ -38,8 +37,20 @@ export const addSauce = async (req, res) => {
 };
 
 export const updateSauce = async (req, res) => {
+  const sauceObject = req.file
+    ? // to check if user modifies the image file or just the text (req.body)
+      {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : req.body;
+
+  console.log("req.body", req.body);
+
   try {
-    await Sauce.updateOne({ _id: req.params.id }, JSON.parse(req.body.sauce));
+    await Sauce.updateOne({ _id: req.params.id }, sauceObject);
     res.status(200).json({ message: "Sauce modifiée avec succès!" });
   } catch (error) {
     console.log("erreur update", error.message);
