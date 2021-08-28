@@ -57,23 +57,76 @@ export const updateSauce = async (req, res) => {
 };
 
 export const handleLike = async (req, res) => {
-  let likes = 1 || 0 || -1;
-  // const likedSauce = {
-  //   ...req.body,
-  //   likes,
-  //   usersLiked: (),
-  //   usersDisliked: (likes = -1 ? req.body.userId : null),
-  // };
-
   try {
     const sauce = await Sauce.findOne({ _id: req.params.id });
-    sauce.likes = likes;
-    sauce.usersLiked = likes === 1 && sauce.usersLiked.push(req.body.userId);
-    sauce.usersDisliked =
-      likes === -1 && sauce.usersDisliked.push(req.body.userId);
+    const alreadyLiked = sauce.usersLiked.find((id) => id === req.body.userId);
+    const alreadyDisliked = sauce.usersDisliked.find(
+      (id) => id === req.body.userId
+    );
+
+    if (alreadyLiked) {
+      req.body.like = 0;
+      sauce.likes -= 1;
+      let index;
+      for (let i = 0; i <= sauce.usersLiked.length; i++) {
+        if (req.body.userId === sauce.usersLiked[i]) {
+          index = i;
+        }
+      }
+      sauce.usersLiked.splice(index, 1);
+    }
+    if (alreadyDisliked) {
+      req.body.like = 0;
+      sauce.dislikes -= 1;
+      let index;
+      for (let i = 0; i <= sauce.usersDisliked.length; i++) {
+        if (req.body.userId === sauce.usersDisliked[i]) {
+          index = i;
+        }
+      }
+      sauce.usersDisliked.splice(index, 1);
+    }
+
+    switch (req.body.like) {
+      case 1:
+        sauce.likes += 1;
+        sauce.usersLiked.push(req.body.userId);
+        break;
+      case -1:
+        sauce.dislikes += 1;
+        sauce.usersDisliked.push(req.body.userId);
+        break;
+      default:
+        break;
+    }
+
+    // if (req.body.like === 1) {
+    //   if (!sauce.usersLiked.find((id) => id === req.body.userId)) {
+    //     // sauce.likes += 1;
+    //     // sauce.usersLiked.push(req.body.userId);
+    //     console.log("sauce pas encore votée");
+    //   } else console.log("sauce déjà votée");
+    // }
+    // else if (req.body.like === -1) {
+    //   if (!sauce.usersDisliked.find((id) => id === req.body.userId)) {
+    //     sauce.dislikes++;
+    //     sauce.usersLiked.push(req.body.userId);
+    //   } else return;
+    // } else if (req.body.like === 0) {
+    //   if (sauce.usersDisliked.find((id, i) => id === req.body.userId)) {
+    //     const index = i;
+    //     sauce.dislikes -= 1;
+    //     sauce.usersDisliked.splice(index, req.body.userId);
+    //   } else if (sauce.usersLiked.find((id, i) => id === req.body.userId)) {
+    //     const index = i;
+    //     sauce.likes -= 1;
+    //     sauce.usersLiked.splice(index, req.body.userId);
+    //   }
+    // }
+
     await sauce.save();
     console.log("liked/disliked sauce", sauce);
-    res.status(200).json({ userId: req.body.userId, likes });
+    res.status(200).json({ userId: req.body.userId, like: req.body.like });
   } catch (error) {
     res.status(500).json({ error });
   }
