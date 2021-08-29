@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
@@ -35,15 +36,21 @@ export const logUser = async (req, res) => {
     // 1- check if user is in DB
     const isUser = await User.findOne({ email: req.body.email });
     if (!isUser) {
-      return res
-        .status(401)
-        .json({ error: "Please sign in to create an account." });
+      return res.status(401).json({ error: "utilisateur non trouvé" });
     }
     // 2- JWT
     const token = createToken(isUser._id);
     console.log(`JWT created!!! ${token}`);
-    // // 3- send user to frontend
-    res.status(200).json({ userId: isUser._id, token: token });
+    // 3- verify password
+    const isValid = await bcrypt.compare(req.body.password, isUser.password);
+    if (!isValid) {
+      return res.status(401).json({ error: "password incorrect!" });
+    }
+    // 4- send user to frontend
+    res.status(200).json({
+      userId: isUser._id,
+      token: token,
+    });
   } catch (error) {
     console.log(`Oops! ${error.message}`);
     res.status(500).json(error);
