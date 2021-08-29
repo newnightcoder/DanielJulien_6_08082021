@@ -14,7 +14,9 @@ export const createUser = async (req, res) => {
     res.status(201).json({ message: "compte créé avec succès" });
   } catch (error) {
     console.log(`Oops! ${error.message}`);
-    res.status(500).json({ error });
+    res.status(500).json({
+      message: `Cette adresse email est déjà utilisée. \n Si vous avez un compte: cliquez sur LOGIN et entrez vos identifiants. \n Si vous n'avez pas de compte: entrez ci-dessus votre adresse email et le mot de passe de votre choix.`,
+    });
   }
 };
 
@@ -44,7 +46,7 @@ export const logUser = async (req, res) => {
     res.status(200).json({ userId: isUser._id, token: token });
   } catch (error) {
     console.log(`Oops! ${error.message}`);
-    res.status(500).json({ error });
+    res.status(500).json(error);
   }
 };
 

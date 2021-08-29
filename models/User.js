@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
+import mongooseUniqueValidator from "mongoose-unique-validator";
 
 // mongoose Schema
 const userSchema = new mongoose.Schema({
@@ -15,6 +16,8 @@ const userSchema = new mongoose.Schema({
     maxLength: [24, "max 24 lettres"],
   },
 });
+
+userSchema.plugin(mongooseUniqueValidator);
 
 // mongoose PRE hook to hash password before saving to DB
 userSchema.pre("save", function () {
