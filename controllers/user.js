@@ -52,5 +52,3 @@ export const logUser = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
-// res.cookie("JWT", token, { httpOnly: false, maxAge: 1000 * 60 * 3 });

@@ -1,3 +1,4 @@
+import fs from "fs";
 import Sauce from "../models/Sauce.js";
 
 export const getAll = async (req, res) => {
@@ -100,30 +101,6 @@ export const handleLike = async (req, res) => {
         break;
     }
 
-    // if (req.body.like === 1) {
-    //   if (!sauce.usersLiked.find((id) => id === req.body.userId)) {
-    //     // sauce.likes += 1;
-    //     // sauce.usersLiked.push(req.body.userId);
-    //     console.log("sauce pas encore votée");
-    //   } else console.log("sauce déjà votée");
-    // }
-    // else if (req.body.like === -1) {
-    //   if (!sauce.usersDisliked.find((id) => id === req.body.userId)) {
-    //     sauce.dislikes++;
-    //     sauce.usersLiked.push(req.body.userId);
-    //   } else return;
-    // } else if (req.body.like === 0) {
-    //   if (sauce.usersDisliked.find((id, i) => id === req.body.userId)) {
-    //     const index = i;
-    //     sauce.dislikes -= 1;
-    //     sauce.usersDisliked.splice(index, req.body.userId);
-    //   } else if (sauce.usersLiked.find((id, i) => id === req.body.userId)) {
-    //     const index = i;
-    //     sauce.likes -= 1;
-    //     sauce.usersLiked.splice(index, req.body.userId);
-    //   }
-    // }
-
     await sauce.save();
     console.log("liked/disliked sauce", sauce);
     res.status(200).json({ userId: req.body.userId, like: req.body.like });
@@ -134,8 +111,14 @@ export const handleLike = async (req, res) => {
 
 export const deleteSauce = async (req, res) => {
   try {
-    await Sauce.deleteOne({ _id: req.params.id });
-    res.status(200).json({ message: "Sauce supprimée!" });
+    const sauce = await Sauce.findOne({ _id: req.params.id });
+    const imgFile = sauce.imageUrl.split("/images/")[1];
+    console.log("fichier image", imgFile);
+
+    fs.unlink(`images/${imgFile}`, async () => {
+      await Sauce.deleteOne({ _id: req.params.id });
+      res.status(200).json({ message: "Sauce supprimée!" });
+    });
   } catch (error) {
     res.status(400).json({ error });
   }
