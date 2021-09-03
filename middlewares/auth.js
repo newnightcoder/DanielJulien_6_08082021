@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 // JWT creation
 export const createToken = (id) => {
   return jwt.sign({ id }, "TEST_JWT_SECRET", {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
 };
 

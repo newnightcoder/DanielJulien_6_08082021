@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { createToken } from "../middlewares/auth.js";
 import User from "../models/User.js";
 
+// SIGNUP
 export const createUser = async (req, res) => {
   const user = {
     email: req.body.email,
@@ -9,7 +10,6 @@ export const createUser = async (req, res) => {
   };
 
   try {
-    // create user in DB
     const newUser = await User.create(user);
     console.log("user added:", newUser);
     res.status(201).json({ message: "compte créé avec succès" });
@@ -21,6 +21,7 @@ export const createUser = async (req, res) => {
   }
 };
 
+// LOGIN
 export const logUser = async (req, res) => {
   const user = {
     email: req.body.email,

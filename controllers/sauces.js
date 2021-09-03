@@ -1,6 +1,7 @@
 import fs from "fs";
 import Sauce from "../models/Sauce.js";
 
+// GET ALL SAUCES
 export const getAll = async (req, res) => {
   try {
     const sauces = await Sauce.find();
@@ -10,6 +11,7 @@ export const getAll = async (req, res) => {
   }
 };
 
+// GET 1 SAUCE
 export const getOne = async (req, res) => {
   try {
     const sauce = await Sauce.findOne({ _id: req.params.id });
@@ -20,6 +22,7 @@ export const getOne = async (req, res) => {
   }
 };
 
+// ADD 1 SAUCE
 export const addSauce = async (req, res) => {
   try {
     const sauce = {
@@ -37,6 +40,7 @@ export const addSauce = async (req, res) => {
   }
 };
 
+// UPDATE SAUCE
 export const updateSauce = async (req, res) => {
   const sauceObject = req.file
     ? // to check if user modifies the image file or just the text (req.body)
@@ -57,6 +61,7 @@ export const updateSauce = async (req, res) => {
   }
 };
 
+// LIKE / DISLIKE
 export const handleLike = async (req, res) => {
   try {
     const sauce = await Sauce.findOne({ _id: req.params.id });
@@ -109,6 +114,7 @@ export const handleLike = async (req, res) => {
   }
 };
 
+// DELETE SAUCE
 export const deleteSauce = async (req, res) => {
   try {
     const sauce = await Sauce.findOne({ _id: req.params.id });
