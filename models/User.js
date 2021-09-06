@@ -17,13 +17,13 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.plugin(mongooseUniqueValidator);
-
 // mongoose PRE hook to hash password before saving to DB
 userSchema.pre("save", function () {
   const salt = bcrypt.genSaltSync(); // genSaltSync() is synchronous. for async, use genSalt()
   this.password = bcrypt.hashSync(this.password, salt); //  hashSync() is synchronous. for async, use hash()
 });
+
+userSchema.plugin(mongooseUniqueValidator);
 
 // mongoose Model
 const User = mongoose.model("User", userSchema, "Users");

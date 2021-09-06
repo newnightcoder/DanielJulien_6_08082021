@@ -11,11 +11,10 @@ export const createUser = async (req, res) => {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
   try {
     if (!user.password.match(passwordRegex)) {
-      res.status(500).json({
+      res.status(401).json({
         message:
-          "votre mot de passe doit contenir au minimum 6 caractères, avec au moins 1 chiffre et 1 lettre en capitale",
+          "vottre mot de passe doit contenir entre 6 et 20 caractères, avec au moins 1 lettre en capitale et 1 chiffre",
       });
-      return;
     } else {
       const newUser = await User.create(user);
       console.log("user added:", newUser);
