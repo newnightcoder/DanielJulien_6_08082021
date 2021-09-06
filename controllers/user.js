@@ -8,11 +8,19 @@ export const createUser = async (req, res) => {
     email: req.body.email,
     password: req.body.password,
   };
-
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
   try {
-    const newUser = await User.create(user);
-    console.log("user added:", newUser);
-    res.status(201).json({ message: "compte créé avec succès" });
+    if (!user.password.match(passwordRegex)) {
+      res.status(500).json({
+        message:
+          "votre mot de passe doit contenir au minimum 6 caractères, avec au moins 1 chiffre et 1 lettre en capitale",
+      });
+      return;
+    } else {
+      const newUser = await User.create(user);
+      console.log("user added:", newUser);
+      res.status(201).json({ message: "compte créé avec succès" });
+    }
   } catch (error) {
     console.log(`Oops! ${error.message}`);
     res.status(500).json({
