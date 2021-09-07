@@ -13,7 +13,7 @@ export const createUser = async (req, res) => {
     if (!user.password.match(passwordRegex)) {
       res.status(401).json({
         message:
-          "vottre mot de passe doit contenir entre 6 et 20 caractères, avec au moins 1 lettre en capitale et 1 chiffre",
+          "votre mot de passe doit contenir entre 6 et 20 caractères, avec au moins 1 lettre en capitale et 1 chiffre",
       });
     } else {
       const newUser = await User.create(user);
